@@ -19,7 +19,7 @@ export class DiagnosisModalComponent {
   diagnosis = {
     diagnosisDate: new Date(),
     complaintOfPatient: '',
-    dignosisOfDoctor: '',
+    diagnosisOfDoctor: '',
     doctorRemarks: ''
   };
 
@@ -33,7 +33,7 @@ export class DiagnosisModalComponent {
     this.diagnosis = {
       diagnosisDate: new Date(),
       complaintOfPatient: '',
-      dignosisOfDoctor: '',
+      diagnosisOfDoctor: '',
       doctorRemarks: ''
     };
   }

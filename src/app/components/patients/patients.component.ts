@@ -83,17 +83,17 @@ export class PatientsComponent implements OnInit {
     this.patient = {
       name: p.name,
       surname: p.surname,
-      birthdate: p.birthdate
+      birthdate: new Date(p.birthdate).toISOString() 
     };
 
     if (p.id === 0) {
-      this.http.post("https://localhost:7117/api/Patient/createPateint", this.patient).subscribe((response: any) => {
+      this.http.post("https://localhost:7117/api/Patient/createPatient", this.patient).subscribe((response: any) => {
         if (response.success) {
           this.getPatients();
         } else {
           alert(response.message);
         }
-      })
+      });
     } else {
       this.http.put(`https://localhost:7117/api/Patient/${p.id}`, this.patient).subscribe((response: any) => {
         if (response.success) {
@@ -101,7 +101,7 @@ export class PatientsComponent implements OnInit {
         } else {
           alert(response.message);
         }
-      })
+      });
     }
     this.selectedPatient = null;
     this.closeModal();

@@ -42,7 +42,7 @@ export class LoginComponent {
       } else {
         alert("Login fail: " + response.message);
       }
-    })
+    });
   }
 
   onSignup() {
@@ -58,6 +58,6 @@ export class LoginComponent {
       } else {
         alert("Sign Up Fail: " + response.message);
       }
-    })
+    });
   }
 }

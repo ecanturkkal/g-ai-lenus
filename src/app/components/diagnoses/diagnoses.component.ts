@@ -23,6 +23,14 @@ export class DiagnosesComponent implements OnInit {
   patientHeaderInfo = "";
   patientId = 0;
 
+  diagnosis = {
+    patientId: 0,
+    diagnosisDate: '',
+    complaintOfPatient: '',
+    diagnosisOfDoctor: '',
+    doctorRemarks: ''
+  };
+
   currentPage = 1;
   totalPages = 1;
 
@@ -42,7 +50,8 @@ export class DiagnosesComponent implements OnInit {
       if (response.success) {
         this.patientProfile = response.data;
         this.diagnoses = response.data.diagnoses;
-        this.patientHeaderInfo = `${this.patientProfile.name} ${this.patientProfile.surname} | ${this.patientProfile.birthdate}`;
+        const age = new Date().getFullYear() - new Date(this.patientProfile.birthdate).getFullYear();
+        this.patientHeaderInfo = `${this.patientProfile.name} ${this.patientProfile.surname} | ${age}`;
       } else {
         alert(response.message);
       }
@@ -58,14 +67,39 @@ export class DiagnosesComponent implements OnInit {
   }
 
   askToGailenus() {
+    const request = {
+      birthdate: this.patientProfile.birthdate,
+      details: this.diagnoses
+    }
+    this.http.post("https://localhost:7117/api/GAIlenus/askToGAIlenus", request).subscribe((response: any) => {
+      if (response.success) {
+        alert(JSON.stringify(response.data));
+      } else {
+        alert(response.message);
+      }
+    });
   }
 
   changePage(pageNumber: any) {
     return;
   }
 
+  onDiagnosisSaved(d: any) {
+    this.diagnosis = {
+      patientId: this.patientId,
+      diagnosisDate: new Date(d.diagnosisDate).toISOString(),
+      complaintOfPatient: d.complaintOfPatient,
+      diagnosisOfDoctor: d.diagnosisOfDoctor,
+      doctorRemarks: d.doctorRemarks
+    };
 
-  onDiagnosisSaved(p: any) {
+    this.http.post("https://localhost:7117/api/Patient/createDiagnosis", this.diagnosis).subscribe((response: any) => {
+      if (response.success) {
+        this.getDiagnoses();
+      } else {
+        alert(response.message);
+      }
+    });
     this.closeModal();
   }
 
