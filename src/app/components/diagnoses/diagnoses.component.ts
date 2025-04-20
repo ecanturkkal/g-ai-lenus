@@ -1,22 +1,23 @@
-import { JsonPipe } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DiagnosisModalComponent } from './diagnosis-modal/diagnosis-modal.component';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-diagnoses',
   standalone: true,
-  imports: [CommonModule, DiagnosisModalComponent, JsonPipe],
+  imports: [CommonModule, DiagnosisModalComponent],
   templateUrl: './diagnoses.component.html',
   styleUrl: './diagnoses.component.css'
 })
 
 export class DiagnosesComponent implements OnInit {
-
-  http = inject(HttpClient);
-  router = inject(Router);
+  constructor(
+    private apiService: ApiService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
 
   diagnoses: any[] = [];
   patientProfile: any = {};
@@ -36,8 +37,6 @@ export class DiagnosesComponent implements OnInit {
 
   isModalVisible = false;
 
-  constructor(private route: ActivatedRoute) { }
-
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.patientId = Number(params['patient_id']);
@@ -46,7 +45,7 @@ export class DiagnosesComponent implements OnInit {
   }
 
   getDiagnoses() {
-    this.http.get(`https://localhost:7117/api/Patient/${this.patientId}`).subscribe((response: any) => {
+    this.apiService.get<any>(`Patient/${this.patientId}`).subscribe((response: any) => {
       if (response.success) {
         this.patientProfile = response.data;
         this.diagnoses = response.data.diagnoses;
@@ -71,7 +70,7 @@ export class DiagnosesComponent implements OnInit {
       birthdate: this.patientProfile.birthdate,
       details: this.diagnoses
     }
-    this.http.post("https://localhost:7117/api/GAIlenus/askToGAIlenus", request).subscribe((response: any) => {
+    this.apiService.post("GAIlenus/askToGAIlenus", request).subscribe((response: any) => {
       if (response.success) {
         alert(JSON.stringify(response.data));
       } else {
@@ -93,7 +92,7 @@ export class DiagnosesComponent implements OnInit {
       doctorRemarks: d.doctorRemarks
     };
 
-    this.http.post("https://localhost:7117/api/Patient/createDiagnosis", this.diagnosis).subscribe((response: any) => {
+    this.apiService.post("Patient/createDiagnosis", this.diagnosis).subscribe((response: any) => {
       if (response.success) {
         this.getDiagnoses();
       } else {

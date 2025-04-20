@@ -1,8 +1,11 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, Injectable } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ApiService } from '../../services/api.service'; // yolunu projene göre düzelt
 
+@Injectable({
+  providedIn: 'root'
+})
 
 @Component({
   selector: 'app-login',
@@ -13,9 +16,10 @@ import { Router } from '@angular/router';
 })
 
 export class LoginComponent {
-
-  http = inject(HttpClient);
-  router = inject(Router);
+  constructor(
+    private apiService: ApiService,
+    private router: Router
+  ) { }
 
   isSignUpMode = false;
 
@@ -34,7 +38,7 @@ export class LoginComponent {
   }
 
   onLogin() {
-    this.http.post("https://localhost:7117/api/Auth/login", this.loginObj).subscribe((response: any) => {
+    this.apiService.post<any>('Auth/login', this.loginObj).subscribe((response: any) => {
       if (response.success) {
         localStorage.setItem("username", this.loginObj.Username);
         localStorage.setItem('gAIlenusToken', response.data);
@@ -46,7 +50,7 @@ export class LoginComponent {
   }
 
   onSignup() {
-    this.http.post("https://localhost:7117/api/Auth/register", this.signupObj).subscribe((response: any) => {
+    this.apiService.post<any>('Auth/register', this.signupObj).subscribe((response: any) => {
       if (response.success) {
         alert(response.message);
         this.isSignUpMode = false;
