@@ -51,7 +51,7 @@ export class PatientsComponent implements OnInit {
   }
 
   viewDiagnoses(id: any) {
-    alert("viewDiagnoses " + id);
+    this.router.navigate(['/diagnoses'], { queryParams: { patient_id: id } });
   }
 
   editPatient(patient: any) {
@@ -60,7 +60,7 @@ export class PatientsComponent implements OnInit {
   }
 
   deletePatient(id: any) {
-    this.http.delete("https://localhost:7117/api/Patient/" + id).subscribe((response: any) => {
+    this.http.delete(`https://localhost:7117/api/Patient/${id}`).subscribe((response: any) => {
       if (response.success) {
         this.getPatients();
       } else {
@@ -95,7 +95,7 @@ export class PatientsComponent implements OnInit {
         }
       })
     } else {
-      this.http.put("https://localhost:7117/api/Patient/" + p.id, this.patient).subscribe((response: any) => {
+      this.http.put(`https://localhost:7117/api/Patient/${p.id}`, this.patient).subscribe((response: any) => {
         if (response.success) {
           this.getPatients();
         } else {

@@ -1,19 +1,49 @@
-<nav class="navbar navbar-expand-sm bg-light">
-
-  <div class="container-fluid">
-    <!-- Links -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="#">Patients</a>
-      </li>
-      <!-- <li class="nav-item">
-          <a class="nav-link" href="#">Menu Item 2</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Menu Item 3</a>
-        </li> -->
-    </ul>
+<div class="container">
+  <div class="header">
+    <h1>Diagnoses</h1>
+    <div class="actions">
+      <button class="btn btn-secondary" (click)="backToPatients()">
+        <i class="fas fa-angle-left"></i> Back
+      </button>
+      <button class="btn btn-primary" (click)="openDiagnosisModal()">
+        <i class="fas fa-plus"></i> New Diagnosis
+      </button>
+      <button class="btn btn-info" (click)="askToGailenus()">
+        <i class="fas fa-heartbeat"></i> Ask to GAIlenus
+      </button>
+    </div>
   </div>
 
-</nav>
-<router-outlet></router-outlet>
+  <div class="patient-grid">
+    <div class="grid-header">
+      {{patientHeaderInfo}}
+    </div>
+
+    <div class="grid-body">
+      <div class="patient-row" *ngFor="let diag of diagnoses">
+        <div class="col-date"> <strong>Diagnosis Date: </strong> {{ diag.diagnosisDate | date: 'dd.MM.yyyy' }}</div>
+        <div class="col-complaint"> <strong>Complaint of Patient: </strong> {{ diag.complaintOfPatient }}</div>
+        <div class="col-diagnosis"> <strong>Diagnosis of Doctor: </strong> {{ diag.diagnosisOfDoctor }}</div>
+        <div class="col-remarks"> <strong>Doctor Remarks: </strong> {{ diag.doctorRemarks }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="empty-state" *ngIf="diagnoses.length === 0">
+    <p>No diagnoses record.</p>
+  </div>
+
+  <div class="pagination">
+    <button [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <span>Page {{ currentPage }} / {{ totalPages }}</span>
+    <button [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  </div>
+</div>
+
+<app-diagnosis-modal [isVisible]="isModalVisible" (onDiagnosisSaved)="onDiagnosisSaved($event)"
+  (closeModal)="closeModal()">
+</app-diagnosis-modal>
