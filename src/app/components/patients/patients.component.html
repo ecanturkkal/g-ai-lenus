@@ -2,7 +2,7 @@
     <div class="header">
         <h1>Patients</h1>
         <div class="actions">
-            <button class="btn btn-primary" (click)="createNewPatient()">
+            <button class="btn btn-primary" (click)="openPatientModal()">
                 <i class="fas fa-plus"></i> New Patient
             </button>
             <button class="btn btn-logout" (click)="logout()">
@@ -10,7 +10,7 @@
             </button>
         </div>
     </div>
-    
+
     <div class="patient-grid">
         <div class="grid-header">
             <div class="col-name">Name</div>
@@ -28,7 +28,7 @@
                     <button class="action-btn btn-detail" (click)="viewDiagnoses(patient.id)" title="Diagnoses">
                         <i class="fas fa-eye"></i>
                     </button>
-                    <button class="action-btn btn-edit" (click)="editPatient(patient.id)" title="Edit">
+                    <button class="action-btn btn-edit" (click)="editPatient(patient)" title="Edit">
                         <i class="fas fa-edit"></i>
                     </button>
                     <button class="action-btn btn-delete" (click)="deletePatient(patient.id)" title="Delete">
@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <div class="empty-state"  *ngIf="patients.length === 0">
+    <div class="empty-state" *ngIf="patients.length === 0">
         <p>No pateints record.</p>
     </div>
 
@@ -53,3 +53,10 @@
         </button>
     </div>
 </div>
+
+<app-patient-modal 
+    [isVisible]="isModalVisible" 
+    [editedPatient]="selectedPatient" 
+    (onPatientSaved)="onPatientSaved($event)"
+    (closeModal)="closeModal()">    
+</app-patient-modal>
