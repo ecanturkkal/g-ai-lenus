@@ -1,0 +1,52 @@
+<div class="layout">
+    <div class="container">
+        <div class="forms-container">
+            <div class="signin-signup">
+                <!-- Login Form -->
+                <form action="#" class="sign-in-form" [hidden]="isSignUpMode">
+                    <h2 class="title">Login</h2>
+                    <div class="logo">
+                        <span>g</span>AI<span>lenus</span>
+                    </div>
+                    <div class="input-field">
+                        <i class="fas fa-user"></i>
+                        <input type="text" name="Username" placeholder="Username" [(ngModel)]="loginObj.Username" />
+                    </div>
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="Password" placeholder="Password" [(ngModel)]="loginObj.Password" />
+                    </div>
+                    <button type="submit" class="btn solid" (click)="onLogin()">Login</button>
+                </form>
+    
+                <!-- Signup Form -->
+                <form action="#" class="sign-up-form" [hidden]="!isSignUpMode">
+                    <h2 class="title">Sign Up</h2>
+                    <div class="logo">
+                        <span>g</span>AI<span>lenus</span>
+                    </div>
+                    <div class="input-field">
+                        <i class="fas fa-user"></i>
+                        <input type="text" name="Username" placeholder="Username" [(ngModel)]="signupObj.Username" />
+                    </div>
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="Password" placeholder="Password" [(ngModel)]="signupObj.Password" />
+                    </div>
+                    <button type="submit" class="btn solid" (click)="onSignup()">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    
+        <div class="panels-container">
+            <div class="panel left-panel">
+                <div class="content">
+                    <p>Start benefiting from our AI-powered solutions with gAIlenus!</p>
+                    <button class="btn transparent" [innerText]="isSignUpMode ? 'Login' : 'Sign Up'"
+                        (click)="toggleSignUpMode()">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
