@@ -1,6 +1,6 @@
-# GAIlenus
+# G-AI-lenus 🧠💡
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.18.
+**G-AI-lenus** is an artificial intelligence-supported web application developed to support patient monitoring in the healthcare field. This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.18.
 
 ## Development server
 
