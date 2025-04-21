@@ -23,7 +23,6 @@ export class DiagnosesComponent implements OnInit {
   patientProfile: any = {};
   patientHeaderInfo = "";
   patientId = 0;
-  gailenusResult = "";
 
   diagnosis = {
     patientId: 0,
@@ -37,7 +36,9 @@ export class DiagnosesComponent implements OnInit {
   totalPages = 1;
 
   isModalVisible = false;
-  isLoading = false;
+
+  gailenusResult: any = {};
+  showGailenusResult = false;
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -49,6 +50,7 @@ export class DiagnosesComponent implements OnInit {
   getDiagnoses() {
     this.apiService.get<any>(`Patient/${this.patientId}`).subscribe((response: any) => {
       if (response.success) {
+        this.showGailenusResult = false;
         this.patientProfile = response.data;
         this.diagnoses = response.data.diagnoses;
         const age = new Date().getFullYear() - new Date(this.patientProfile.birthdate).getFullYear();
@@ -68,19 +70,18 @@ export class DiagnosesComponent implements OnInit {
   }
 
   askToGailenus() {
-    this.isLoading = true;
     const request = {
       birthdate: this.patientProfile.birthdate,
       details: this.diagnoses
     }
     this.apiService.post("GAIlenus/askToGAIlenus", request).subscribe((response: any) => {
       if (response.success) {
-        this.gailenusResult = JSON.stringify(response.data);
+        this.gailenusResult = response.data;
+        this.showGailenusResult = true;
       } else {
         alert(response.message);
       }
     });
-    this.isLoading = false;
   }
 
   changePage(pageNumber: any) {

@@ -27,9 +27,15 @@
         <div class="col-remarks"> <strong>Doctor Remarks: </strong> {{ diag.doctorRemarks }}</div>
       </div>
     </div>
+  </div>
 
-    <div>
-      <p>{{gailenusResult}}</p>
+  <div class="card mt-3" *ngIf="showGailenusResult">
+    <div class="card-body">
+      <h5 class="card-title"><strong>GAIlenus Diagnosis Result</strong></h5>
+      <p><strong>Diagnosis:</strong> {{ gailenusResult.diagnosis }}</p>
+      <p><strong>Confidence:</strong> {{ gailenusResult.confidence | percent:'1.0-2' }}</p>
+      <p><strong>Risk Level:</strong> {{ gailenusResult.riskLevel }}</p>
+      <p><strong>GAIlenus Remarks:</strong> {{ gailenusResult.gaIlenusRemarks }}</p>
     </div>
   </div>
 
@@ -47,8 +53,6 @@
     </button>
   </div>
 </div>
-
-<div class="loader" *ngIf="isLoading"></div>
 
 <app-diagnosis-modal [isVisible]="isModalVisible" (onDiagnosisSaved)="onDiagnosisSaved($event)"
   (closeModal)="closeModal()">
